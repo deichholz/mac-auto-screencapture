@@ -15,7 +15,7 @@ After you copy the bin/screenshot.sh to your local system, add the following to 
 ### - Cron ###
 It's easy to specify time, all 5 asterisks.
 ```
-* * * * * ${HOME}/bin/screenshot.sh 2>&1 >${HOME}/screenshots/cron.log
+* * * * * /users/deichhol/bin/screenshot.sh 2>&1 >/Users/deichhol/screenshots/cron.log
 ```
 
 ### - Launchd ###
