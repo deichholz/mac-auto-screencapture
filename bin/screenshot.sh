@@ -1,26 +1,29 @@
 #!/bin/bash
 
 set -e
-DT_STR=`date +"%Y%m%d"`
-IMG_DIR=/Users/deichhol/screenshots
-DAY_DIR=$IMG_DIR/$DT_STR
-SCREEN_COUNT=`/usr/sbin/system_profiler SPDisplaysDataType | grep 'Online: Yes' | wc -l`
+#set -x
+
+DT_STR=$(date +"%Y%m%d_%H%M%S")
+DAY_DIR=${HOME}'/screenshots_alpha/'$(date +"%Y%m%d")
+SCREEN_COUNT=$(/usr/sbin/system_profiler SPDisplaysDataType | grep 'Online: Yes' | wc -l | tr -d '[:space:]')
 
 # create directories
 [ -d "$DAY_DIR/raw" ] || mkdir -p $DAY_DIR/raw
 
 # capture screens
 /usr/sbin/screencapture -x \
-    $DAY_DIR/raw/$(date +"%Y%m%d_%H%M%S")_1.png \
-    $DAY_DIR/raw/$(date +"%Y%m%d_%H%M%S")_2.png \
-    $DAY_DIR/raw/$(date +"%Y%m%d_%H%M%S")_3.png \
+    $DAY_DIR/raw/${DT_STR}_1.png \
+    $DAY_DIR/raw/${DT_STR}_2.png \
+    $DAY_DIR/raw/${DT_STR}_3.png \
 
-# stitch screens into single img
-montage -geometry 100% \
-    $DAY_DIR/raw/$(date +"%Y%m%d_%H%M%S")_3.png \
-    $DAY_DIR/raw/$(date +"%Y%m%d_%H%M%S")_1.png \
-    $DAY_DIR/raw/$(date +"%Y%m%d_%H%M%S")_2.png \
-    $DAY_DIR/$(date +"%Y%m%d_%H%M%S").png 
- 2>> $IMG_DIR/error.log
-
-echo "captured to $IMG_PATH" >> $IMG_DIR/screenshots.log
+# Create a single file from the multiple raw screencapture files.
+if [ $SCREEN_COUNT = 1 ]; then
+    mv $DAY_DIR/raw/${DT_STR}_?.png $DAY_DIR/${DT_STR}.png
+else
+    # stitch multiple images together into 1
+    for IMG in $DAY_DIR/raw/${DT_STR}_?.png; do
+        IM_ARGS="${IM_ARGS} ${IMG} "
+    done
+    IM_CMD="/usr/local/bin/montage -geometry 100% ${IM_ARGS} $DAY_DIR/${DT_STR}.png"
+    ${IM_CMD}
+fi
