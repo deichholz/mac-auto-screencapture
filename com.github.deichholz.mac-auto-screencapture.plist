@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.github.deichholz.mac-auto-screenshot</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/myuser/bin/screenshot.sh</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>60</integer>
+    <key>StandardOutPath</key>
+    <string>/Some/Output/Dir/screenshot.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Some/Output/Dir/screenshot-err.log</string>
+</dict>
+</plist>
